@@ -5,6 +5,7 @@ namespace Ozparr\AdminBlog\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Ozparr\AdminBlog\Models\Entrada;
 use Ozparr\AdminBlog\Models\Imagen;
 use Ozparr\AdminBlog\Models\Tag;
@@ -31,7 +32,7 @@ class BlogController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        return view('admin_blog::admin.blog.nuevo', compact('tags'));
+        return view('admin_blog::admin.blog.new', compact('tags'));
     }
 
     /**
@@ -42,15 +43,16 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+
         $entrada = new Entrada($request->all());
         $entrada->slug = $request->titulo;
         $entrada->status = self::statusPublished($request->data);
 
-        //TODO Cambiar el id del usuario
-        $entrada->user_id = 1;
+        $entrada->user_id = Auth::user()->id;
 
         $tituloNoRepetido = $entrada->saveEntrada();
 
+        self::tags($request->tag, $entrada->id);
 
         return self::redirecs($request,$tituloNoRepetido,$entrada);
 
@@ -78,7 +80,8 @@ class BlogController extends Controller
     public function edit($id)
     {
         $entrada = Entrada::find($id);
-        return view('admin_blog::admin.blog.nuevo', compact('entrada'));
+        $tags = Tag::all();
+        return view('admin_blog::admin.blog.new', compact('entrada','tags'));
     }
 
     /**
@@ -90,6 +93,8 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        self::tags($request->tag, $id);
         $entrada = Entrada::find($id);
         $entrada->fill($request->all());
         $entrada->slug = $request->titulo;
@@ -97,9 +102,23 @@ class BlogController extends Controller
 
         $tituloNoRepetido = $entrada->saveEntrada();
 
-
         return self::redirecs($request,$tituloNoRepetido,$entrada);
 
+    }
+
+    private function tags($requestTag, $entradaId){
+        if($requestTag != null){
+            $tag = Tag::where('nombre','=',$requestTag)->first();
+
+            if($tag == null){
+                $tag = new Tag(['nombre'=>$requestTag]);
+                $tag->save();
+            }
+
+            $entrada = Entrada::find($entradaId);
+
+            $entrada->tags()->attach($tag);
+        }
     }
 
 
@@ -129,6 +148,13 @@ class BlogController extends Controller
         }else{
             return Entrada::NO_PUBLICADO;
         }
+    }
+
+    public function detachTagas(Request $request){
+        $entrada = Entrada::find($request->entradaId);
+        $entrada->tags()->detach($request->tagId);
+
+        return redirect()->route('blog.edit',['id'=>$entrada->id]);
     }
 
     private function uploadImges($request,$entrada){

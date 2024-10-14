@@ -2,6 +2,7 @@
 
 @section('css')
     {!! Html::style('assets/kartik-v/bootstrap-fileinput/css/fileinput.min.css') !!}
+    {!! Html::style('assets/jquery-ui/jquery-ui.css') !!}
 @endsection
 
 @section('titulo', 'Nueva Entrada')
@@ -12,7 +13,7 @@
 
 @section('contenido')
 
-    <!-- Aqui va todo el contenido -->
+    <!-- Aqui va to-do el contenido -->
     <div class="row">
         @if(!isset($entrada))
             @include('admin_blog::admin.blog.partials_nuevo.html')
@@ -20,11 +21,11 @@
             @include('admin_blog::admin.blog.partials_nuevo.editar')
         @endif
         {!!	Form::open([ 'route'=>'blog.imgUpload', 'method'=>'POST', 'files'=>true, 'enctype'=>"multipart/form-data"]) !!}
-            @if(isset($entrada))
-                <input type="hidden" name="id" value="{!! $entrada->id !!}">
-            @else
-                <input type="hidden" name="id" value="0">
-            @endif
+        @if(isset($entrada))
+            <input type="hidden" name="id" value="{!! $entrada->id !!}">
+        @else
+            <input type="hidden" name="id" value="0">
+        @endif
 
 
         {!! Form::close() !!}
@@ -57,14 +58,28 @@
                 initialPreviewAsData: true,
                 initialPreview: [
                     @if(isset($entrada))
-                        @foreach($entrada->imagenes as $img)
-                            "{!! url($img->url) !!}",
-                        @endforeach
+                            @foreach($entrada->imagenes as $img)
+                        "{!! url($img->url) !!}",
+                    @endforeach
                     @endif
                 ]
             });
-        })
+
+            var availableTags = [
+                @isset($tags)
+                    @foreach($tags as $tag )
+                        '{!! $tag->nombre !!}',
+                    @endforeach
+                @endisset
+            ];
+
+            $( "#tags" ).autocomplete({
+                source: availableTags
+            });
+        });
     </script>
+
+    {!! Html::script('assets/jquery-ui/jquery-ui.js') !!}
 
     <!--Scripts de galeria-->
     {!! Html::script('assets/kartik-v/bootstrap-fileinput/js/plugins/piexif.min.js') !!}

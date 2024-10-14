@@ -68,6 +68,9 @@ class Entrada extends Model
                 $this->status = self::NO_PUBLICADO;
                 $this->saveEntrada(false);
             }
+            else{
+                abort(500);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
 
 @section('contenido')
 
-    <!-- Aqui va todo el contenido -->
+    <!-- Aqui va to-do el contenido -->
     @include('admin_blog::admin.blog.partials.tableEntradas')
 
 @endsection

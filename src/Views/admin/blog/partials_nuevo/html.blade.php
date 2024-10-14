@@ -23,15 +23,29 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body pad">
-            <input class="form-control" type="text" name="titulo" placeholder="Titulo">
-            <br>
-            <textarea class="form-control" rows="3" name="descripcion" placeholder="Descripción"></textarea>
-            <br>
-            <input class="form-control" type="text" name="img" placeholder="Imagen De Cabecera">
-            <br>
-            <textarea id="editor1" rows="10" cols="80" name="contenido">
-                This is my textarea to be replaced with CKEditor.
-            </textarea>
+            <div class="form-group">
+                <label>Titulo</label>
+                <input class="form-control" type="text" name="titulo" placeholder="Titulo">
+            </div>
+
+            <div class="form-group">
+                <label>Descripcion</label>
+                <textarea maxlength="191" class="form-control" rows="3" name="descripcion" placeholder="Descripción"></textarea>
+
+            </div>
+
+            <div class="form-group">
+                <label>Imagen de portada</label>
+                <input class="form-control" type="text" name="img" placeholder="Imagen De Cabecera" >
+            </div>
+
+            <div class="form-group">
+                <label>Contenido</label>
+                <textarea id="editor1" rows="10" cols="80" name="contenido">
+                    This is my textarea to be replaced with CKEditor.
+                </textarea>
+            </div>
+            @include('admin_blog::admin.blog.partials_nuevo.tags')
         </div>
     </div>
 

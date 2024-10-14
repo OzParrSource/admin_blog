@@ -23,15 +23,32 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body pad">
-            <input class="form-control" type="text" name="titulo" placeholder="Titulo" value="{!! $entrada->titulo !!}">
-            <br>
-            <textarea class="form-control" rows="3" name="descripcion" placeholder="Descripción">{!! $entrada->descripcion !!}</textarea>
-            <br>
-            <input class="form-control" type="text" name="img" placeholder="Imagen De Cabecera" value="{!! $entrada->img !!}">
-            <br>
-            <textarea id="editor1" rows="10" cols="80" name="contenido">
-                {!! $entrada->contenido !!}
-            </textarea>
+            <div class="form-group">
+                <label>Titulo</label>
+                <input class="form-control" type="text" name="titulo" placeholder="Titulo" value="{!! $entrada->titulo !!}">
+            </div>
+
+            <div class="form-group">
+                <label>Descripcion</label>
+                <textarea maxlength="191" class="form-control" rows="3" name="descripcion" placeholder="Descripción">{!! $entrada->descripcion !!}</textarea>
+
+            </div>
+
+            <div class="form-group">
+                <label>Imagen de portada</label>
+                <input class="form-control" type="text" name="img" placeholder="Imagen De Cabecera" value="{!! $entrada->img !!}">
+            </div>
+
+            <div class="form-group">
+                <label>Contenido</label>
+                <textarea id="editor1" rows="10" cols="80" name="contenido">
+                    {!! $entrada->contenido !!}
+                </textarea>
+            </div>
+
+
+            @include('admin_blog::admin.blog.partials_nuevo.tags')
+
         </div>
     </div>
 

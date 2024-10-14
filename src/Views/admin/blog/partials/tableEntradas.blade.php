@@ -25,6 +25,7 @@
                     <tr>
                         <th style="width: 10px">#</th>
                         <th>Titulo</th>
+                        <th>Tags</th>
                         <th>Estado</th>
                         <th>Fecha</th>
                         <th>Op</th>
@@ -34,6 +35,11 @@
                             <tr>
                                 <td>{!! $entrada->id !!}</td>
                                 <td>{!! $entrada->titulo !!}</td>
+                                <td>
+                                    @foreach($entrada->tags as $tag)
+                                        <span class="badge bg-blue tab">{!! $tag->nombre !!}</span>
+                                    @endforeach
+                                </td>
                                 <td>
                                     @if($entrada->status == 'published')
                                         Publicada
